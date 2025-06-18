@@ -1,0 +1,85 @@
+import React from 'react'
+import './App.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Applayout from './layouts/app-layout';
+import Landingpage from './pages/Landing';
+import Onboarding from './pages/Onboarding';
+import Jobpage from './pages/job';
+import Joblisting from './pages/job-listing';
+import Myjobs from './pages/my-jobs';
+import Postjob from './pages/post-job';
+import Savedjobs from './pages/saved-job';
+import { ThemeProvider } from './components/theme-provider';
+import Protectedroute from './components/protected-route';
+
+const router = createBrowserRouter([
+  {
+    element: <Applayout />,
+    children: [
+      {
+        path: '/'  , 
+        element: <Landingpage />
+
+      },
+      {
+        path: '/onboarding',
+
+        element: (
+          <Protectedroute>
+            <Onboarding />
+          </Protectedroute>
+        ),
+      },
+      {
+        path: '/job/:id',
+        element: (
+          <Protectedroute>
+            <Jobpage />
+          </Protectedroute>
+        ),
+      },
+      {
+        path: '/job-listing',
+        element: (
+          <Protectedroute>
+            <Joblisting />
+          </Protectedroute>
+),
+      },
+      {
+        path: '/my-jobs',
+        element: (
+          <Protectedroute>
+            <Myjobs />
+          </Protectedroute>
+        ),
+      },
+      {
+        path: '/post-job',
+        element:(
+          <Protectedroute>
+            <Postjob />
+          </Protectedroute>
+        ),
+      },
+      {
+        path: '/saved-job',
+        element:(
+          <Protectedroute>
+            <Savedjobs />
+          </Protectedroute>
+        ),
+      }
+    ]
+  }
+])
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
+
+  );
+}
+export default App

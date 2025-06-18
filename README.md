@@ -20,7 +20,7 @@
 
 ## Getting Started
 
-1. Clone the repository.
+1. Clone the repos itory.
 2. Install dependencies: `npm install`
 3. Set up environment variables for Supabase and Clerk.
 4. Run the development server: `npm start`

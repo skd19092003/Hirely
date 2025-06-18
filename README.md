@@ -1,12 +1,30 @@
-# React + Vite
+# Hirely
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Hirely** is a modern job portal designed for both job seekers and employers. Built with React, it offers a seamless and responsive user experience.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Job Listings:** Browse and search for jobs posted by employers.
+- **Employer Dashboard:** Post and manage job openings.
+- **Job Seeker Profiles:** Create and update professional profiles.
+- **Authentication:** Secure sign-in and sign-up powered by [Clerk](https://clerk.com/).
+- **Database Integration:** All data is managed using [Supabase](https://supabase.com/).
+- **Modern UI:** Styled with [Tailwind CSS](https://tailwindcss.com/) for a clean and responsive design.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React
+- **Authentication:** Clerk
+- **Database & Backend:** Supabase
+- **Styling:** Tailwind CSS
+
+## Getting Started
+
+1. Clone the repository.
+2. Install dependencies: `npm install`
+3. Set up environment variables for Supabase and Clerk.
+4. Run the development server: `npm start`
+
+---
+
+Hirely streamlines the job search and hiring process with a robust, scalable, and user-friendly platform.

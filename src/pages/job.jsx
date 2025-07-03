@@ -1,9 +1,162 @@
-import React from 'react'
+import useFetch from "@/hooks/usefetch";
+import { useUser } from "@clerk/clerk-react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getSingleJob, updateHiringStatus } from "@/api/apiJobs";
+import { BarLoader } from "react-spinners";
+import {
+  Briefcase,
+  DoorClosedLockedIcon,
+  DoorOpenIcon,
+  MapPin,
+} from "lucide-react";
+import MDEditor from "@uiw/react-md-editor";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {ApplyJobDrawer} from "@/components/ui/apply-job";
+import ApplicationCard from "@/components/ApplicationCard";
+
 
 const Jobpage = () => {
-  return (
-    <div>Jobpage</div>
-  )
-}
+  const { isLoaded, user } = useUser();
+  const { id } = useParams();
+  // useparam is used for getting the url parameter
+  //now usefetch an beused
+  const {
+    loading: loadingJob,
+    data: job,
+    fn: fnjob,
+  } = useFetch(getSingleJob, { job_id: id }); //providing the job id as id from params get to equalise and give single job bck
+  // loading comes from usefetch and in loadingJobz A boolean that is true while the job data is being fetched, and false when loading is done.
+  // Use it to show a loading spinner or message while waiting for data.
+  // job: The actual job data returned from your API (getSingleJob).
+  // Use this to display the job details on the page.
+  // fnjob: A function you can call to manually re-fetch the job data (for example, after an update or refresh).
+  // Call fnjob() if you want to reload the job data.
+  const {  fn: fnHiringStatus } = useFetch( updateHiringStatus,{ job_id: id } );
+  //this is a custom hook
 
-export default Jobpage
+const handleHiringStatusChange = (value) => {
+  const isopen = value === "open";
+  fnHiringStatus(isopen).then(() => {
+    fnjob();
+  });
+};
+
+  useEffect(() => {
+    if (isLoaded) {
+      fnjob();
+    }
+  }, [isLoaded]);
+
+  if (!isLoaded || loadingJob) {
+    return (
+      <div className="flex w-full justify-center items-center py-10 min-h-[200px]">
+        <BarLoader width="90%" color="#36d7b7" />
+      </div>
+    );
+  }
+  //kuch  bhi error aaye to return se pehle console.log krke deklhlena
+
+  return (
+    <div className="flex flex-col gap-7 mt-8 mx-7 lg:mr-12 lg:mt-2 ">
+      <div className="flex flex-col-reverse gap-6 sm:flex-row justify-between items-center">
+        <h1 className="gradient-title text-3xl font-extrabold  pb-3 sm:text-6xl">
+          {job?.title}
+        </h1>
+        <img
+          src={job?.company?.logo_url}
+          alt={job?.company?.name}
+          
+          className="h-12 lg:h-16]"
+        />
+         {/* rendering details  for applying to a job first clreate policy in applications*/}
+      {/* now create api application .js related to applications logic */}
+      {/* so we create random filename assigning and upload   it on supabase in resumes bucket 
+      buy usingg jobdata.resume which get by user in frontend */}
+      {/* using that stoage bucket file we can resume apth which will be inserted into 
+      supabase table applications with all jobdata of users  */}
+      {job?.recruiter_id !== user?.id && (
+        <ApplyJobDrawer job={job} user={user} fetchJob={fnjob} 
+        applied={job?.applications?.find((app) => app.candidate_id === user.id)} />
+      )}
+      {/* //fetchjob due to after we submit application we have to update applicants number the page by fnjob */}
+      {/* find calls predicate once for each element of the array, in ascending order, until it finds one where predicate returns true. If such an element is found, find immediately returns that element value. Otherwise, find returns undefined. */}
+   
+      </div>
+      <div className="flex  gap-x-1 justify-evenly">
+        <div className="flex  gap-1">
+          <MapPin />
+          {job?.location}
+        </div>
+        <div className="flex gap-1">
+          <Briefcase /> {job?.applications?.length} Applicants
+        </div>
+        <div className="flex gap-1">
+          {job?.isopen === true ? (
+            <>
+              <DoorOpenIcon />
+              Open
+            </>
+          ) : (
+            <>
+              <DoorClosedLockedIcon />
+              Closed
+            </>
+          )}
+        </div>
+      </div>
+
+      {/* hiring status */}
+      {/* // will have to create a api jobs fpr this*/}
+      {/* after api, use useFetch hook to run the api call when needed and getr the data and use it  */}
+      {job?.recruiter_id === user?.id && (
+        <Select  onValueChange={(value) => handleHiringStatusChange(value)}>
+          <SelectTrigger className="border border-slate-300 focus:border-slate-500">
+            <SelectValue placeholder={"Hiring Status" + ( job?.isopen ? " (open)" : " (closed)" ) } />
+          </SelectTrigger>
+          <SelectContent>
+             {/* key is only used when mapping over an array */}
+                  <SelectItem  value="open">Open</SelectItem>
+                  <SelectItem  value="closed">Closed</SelectItem>
+          </SelectContent>
+        </Select>
+      )}
+
+      <div className="flex flex-col    gap-y-5   ">
+        <div className="flex flex-col w-full gap-5 ">
+          <h2 className="text-2xl font-bold sm:text-3xl ">About The Job</h2>
+          <p className="sm:text-lg lg:w-full">{job?.description}</p>
+        </div>
+
+        <div className="flex flex-col w-full gap-5">
+          <h2 className="text-2xl font-bold sm:text-3xl ">
+            What We're Looking For
+          </h2>
+
+          <MDEditor.Markdown
+            source={job?.requirements}
+            className=" bg-transparent sm:text-lg lg:w-full "
+          />
+        </div>
+      </div>
+
+     {/* /for recruiter view application */}
+     {/* //job.applications aarha h due to getsinglejob mai data :job h and getsinglejob also takes data or compantyname url and application from other table and returns */}
+     {job?.applications?.length > 0 && job?.recruiter_id === user?.id && (
+      <div className="space-y-3 lg:space-y-7 flex flex-col">
+        <h2 className="text-2xl font-bold sm:text-3xl "> Applications </h2>
+          {job?.applications?.map((app) => {
+            return  <ApplicationCard key={app.id} application={app} />
+          }
+          )}
+        
+      </div> )}  
+      
+
+
+
+    </div>
+  );
+};
+
+export default Jobpage;

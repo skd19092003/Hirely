@@ -11,13 +11,14 @@ import Postjob from './pages/post-job';
 import Savedjobs from './pages/saved-job';
 import { ThemeProvider } from './components/theme-provider';
 import Protectedroute from './components/protected-route';
+import StarfieldBackground from './components/StarfieldBackground';
 
 const router = createBrowserRouter([
   {
     element: <Applayout />,
     children: [
       {
-        path: '/'  , 
+        path: '/',
         element: <Landingpage />
 
       },
@@ -44,7 +45,7 @@ const router = createBrowserRouter([
           <Protectedroute>
             <Joblisting />
           </Protectedroute>
-),
+        ),
       },
       {
         path: '/my-jobs',
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/post-job',
-        element:(
+        element: (
           <Protectedroute>
             <Postjob />
           </Protectedroute>
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/saved-job',
-        element:(
+        element: (
           <Protectedroute>
             <Savedjobs />
           </Protectedroute>
@@ -76,9 +77,20 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    // <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    //   <RouterProvider router={router} />
+    // </ThemeProvider>
+
+   <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <StarfieldBackground />
       <RouterProvider router={router} />
     </ThemeProvider>
+    
+    // ✅ So What Happens?
+// When App.jsx renders, the <Starfield /> is mounted and renders the canvas first
+// All your other content (from shadcn UI or pages) renders on top of it
+// Since the canvas is fixed and behind everything, it becomes a moving background layer
+
 
   );
 }

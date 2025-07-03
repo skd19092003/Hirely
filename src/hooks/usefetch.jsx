@@ -46,3 +46,33 @@ const useFetch = (cb, options = {}) => {
 };
 
 export default useFetch;
+
+
+
+//why usefetch is needed 
+// Great question!
+// Your apiJobs.js file contains functions that fetch or update data from Supabase (like getSingleJob, updateHiringStatus).
+// However, these functions are just plain async functions—they don’t manage loading state, errors, or automatically trigger re-renders in your React components.
+
+// Why do you need the useFetch hook?
+// State Management:
+// useFetch manages the loading, error, and data state for you.
+// It tells your component when data is loading, when it’s done, and if there was an error.
+
+// Reactivity:
+// When you call useFetch, it can automatically re-fetch data when dependencies change (like a job ID or user token), and it will re-render your component with the new data.
+// Separation of Concerns:
+// Your API functions only handle the API call.
+// useFetch handles how and when to call them, and how to update your UI based on the result.
+
+// Example
+// loading: true/false, so you can show a spinner.
+// data: the job data, once loaded.
+// fn: a function to manually re-fetch (e.g., after updating hiring status).
+// Summary
+// API functions: Only fetch/update data.
+// useFetch: Manages state, triggers re-renders, and makes your UI reactive and user-friendly.
+// You need both:
+
+// API functions to talk to Supabase.
+// useFetch to make your React components work smoothly with async data.

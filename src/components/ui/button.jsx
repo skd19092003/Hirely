@@ -18,7 +18,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         blue: "bg-blue-600 hover:bg-blue-900 text-[18px] font-semibold text-white",
-        ghostblue: "bg-blue-200 hover:bg-blue-900  font-semibold text-white",
+        ghostblue: "bg-blue-500 hover:bg-blue-900  font-semibold text-white",
         green: "bg-green-700 hover:bg-green-900 font-semibold text-white",
         // custom add variant
         red: "bg-red-500 hover:bg-red-800",

@@ -11,10 +11,19 @@ import companies from "../data/companies.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import faqs from "../data/faqs.json";
+import { useSearchParams } from 'react-router-dom';
 
 
 const Landingpage = () => {
+
+  //used for url checking recruiter access and used on button landing
+  const [search] = useSearchParams();
+  const isRecruiter = search.get("recruiter") === "true";
+    
+
+
   return (
+     
     <main className='flex flex-col gap-10 py-10 px-5 sm:gap-20  sm:py-15 '>
       <section className='text-center'>
         <h1 className='flex flex-col items-center justify-center gradient-title text-2xl font-extrabold sm:text-5xl lg:text-7xl tracking-tighter py-2'>
@@ -28,14 +37,16 @@ const Landingpage = () => {
         </p>
       </section>
 
-      <div className='flex flex-row gap-3 sm:gap-y-5 sm:gap-x-8 lg:gap-x-16 lg:gap-y-8 mx-5 justify-center items-center'>
+      <div className='flex flex-row gap-y-2 gap-x-1 sm:gap-y-5 sm:gap-x-8 lg:gap-x-16 lg:gap-y-8 mx-6 justify-center items-center'>
         {/* buttons */}
         <Link to="/job-listing">
-          <Button variant="green" size="xl">Find Jobs</Button>
+          <Button variant="green" size="xl" onClick={e => {if (isRecruiter) {e.preventDefault();window.openGuestAccessModal();}}}>
+            Find Jobs</Button>
         </Link>
         <span>Or</span>
         <Link to="/post-job">
-          <Button variant="blue" size="xl">Post a Job</Button>
+          <Button variant="blue" size="xl"onClick={e => {if (isRecruiter) {e.preventDefault(); window.openGuestAccessModal();}}}>
+            Post a Job</Button>
         </Link>
 
       </div>
@@ -57,6 +68,7 @@ const Landingpage = () => {
               <img
                 src={path}
                 alt={name}
+               
                 //img ko chita kiya
                 className="h-9 sm:h-14 object-contain"
               />
@@ -77,7 +89,7 @@ const Landingpage = () => {
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="bg-blue-400 text-white flex items-center justify-center">
+            <CardHeader className="bg-gray-600 text-white flex items-center justify-center">
               <CardTitle className="font-bold">For Recruiters</CardTitle>
             </CardHeader>
             <CardContent className="bg-slate-200 text-black font-semibold flex  justify-center pt-4 items-end">
@@ -119,3 +131,24 @@ const Landingpage = () => {
 }
 
 export default Landingpage
+
+
+
+//extra questions
+// 1. What is window.openGuestAccessModal?
+// window is the global object in browsers. Any property you attach to window can be accessed from anywhere in your app, even across different components and files.
+// window.openGuestAccessModal is a custom global function you’re defining, so that any part of your app can call it to open the Guest Access modal.
+// 2. Why is it written outside the Header component?
+// This line initializes the function on the global window object, so it always exists (prevents errors if called before Header mounts).
+// It’s a placeholder; the real function is set inside the Header component.
+
+// 3. What does the useEffect inside Header do?
+// When the Header component mounts, this useEffect overwrites the global function to actually open the Guest Access modal (setshowsignin2(true)).
+// Now, whenever window.openGuestAccessModal() is called, it will open the Guest Access modal in the Header
+
+// 4. How does the Landing page get access to it?
+// Because window.openGuestAccessModal is on the global window object, any component (including your Landing page) can call it:
+// In your Landing page, when a recruiter tries to click "Find Jobs" or "Post a Job", you call this function to open the Guest Access modal, even though the modal state is managed in the Header.
+// 5. Why use window for this?
+// It’s a quick way to allow communication between components that don’t have a direct parent-child relationship (like Header and Landing).
+// It avoids prop-drilling or setting up a React Context for a simple modal trigger.

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import {BarLoader} from 'react-spinners'; //importing barloader for loading state
-import {Button} from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { BarLoader } from 'react-spinners'; //importing barloader for loading state
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const Onboarding = () => {
   const {user,isLoaded} = useUser();  
@@ -32,7 +32,7 @@ useEffect(() => {
 
 
   if(!isLoaded) {
-    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7"  />
+    return <BarLoader className="mb-4 mt-4 lg:mt-0" width={"100%"} color="#36d7b7"  />
   }
 
 
@@ -44,7 +44,7 @@ useEffect(() => {
       <h3 className='gradient-title text-[16px] sm:text-[40px]   lg:text-[49px] font-bold '>
          Choose your role to continue...
     </h3>
-    <div className='flex   mt-14 flex-row gap-52 '>
+    <div className='flex  mt-14   gap-4 sm:flex-row justify-evenly'>
       
                 <Button
                  variant="green" 

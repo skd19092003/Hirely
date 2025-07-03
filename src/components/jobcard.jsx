@@ -40,6 +40,7 @@ const JobCard = ({
     const handleSaveJob = async () => {
         await fnsavedJob({ user_id: user.id, job_id: job.id });
         onJobSaved();
+        
         //this will call the onJobSaved function passed as a prop to the JobCard component
         //this function can be used to update the UI or perform any other action after the job
     };
@@ -70,7 +71,7 @@ const JobCard = ({
 
 
     return (
-        <Card>
+        <Card className="flex flex-col justify-between">
             <CardHeader>
                 <CardTitle className="flex justify-between font-bold" >
                     {job.title}

@@ -1,7 +1,7 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+export const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 //sending the access token to the supabase client to see if user is authenticated to access or not
 const supabaseClient = async(supabaseAccessToken)=>{
@@ -29,4 +29,4 @@ export default supabaseClient
 // Why:
 // When using Clerk for authentication and Supabase for your database, you need to send the user's access token to Supabase. This allows Supabase to enforce Row Level Security (RLS) and know which user is making requests.
 // How to use:
-// Call supabaseClient(clerkAccessToken) to get a Supabase client that sends the correct Authorization header for the current use
+// Call supabaseClient(clerkAccessToken) to get a Supabase client that sends the correct Authorization header for the current use 

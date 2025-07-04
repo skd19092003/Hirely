@@ -55,6 +55,7 @@ const Joblisting = () => {
     if (isLoaded) fnjobs();
     // This will call the fnjobs function to fetch jobs when the component mounts
     // The empty dependency array ensures this runs only once when the component mounts
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, location, company_id, searchQuery]);
 
   const { fn: fnCompanies, data: Companies } = useFetch(getCompanies);
@@ -67,6 +68,7 @@ const Joblisting = () => {
     if (isLoaded) fnCompanies();
     // This will call the fnCompanies function to fetch companies when the component mounts
     // The empty dependency array ensures this runs only once when the component mounts
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   //now the handle search buton which could have been done already done with onchange
@@ -104,9 +106,9 @@ const Joblisting = () => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center mt-10 lg:mb-8 lg:mt-0">
-        <h1 className="gradient-title text-4xl font-extrabold   sm:text-5xl lg:text-7xl">
+        <h2 className="gradient-title text-4xl font-extrabold   sm:text-5xl lg:text-7xl">
           Latest Jobs
-        </h1>
+        </h2>
       </div>
 
       <form className="m-5 flex flex-row gap-5 ">
@@ -150,7 +152,7 @@ const Joblisting = () => {
               })}
             </SelectGroup>
           </SelectContent>
-        </Select>
+        </Select> 
 
         <Select
           value={company_id}

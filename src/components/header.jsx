@@ -44,7 +44,7 @@ const Header = () => {
 
   const [search, setsearch] = useSearchParams();
   // useSearchParams is a hook that allows you to read and modify the query parameters in the URL.
-  useEffect(() => {
+  useEffect(() => { 
     if (search.get("sign-in")) {
       setshowsignin(true);
       //this is when we we are not login and tey to visit other pages

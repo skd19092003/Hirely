@@ -45,9 +45,7 @@ const Protectedroute = ({ children }) => {
 //  so the alert does not show again.
             alert("You are not allowed to access this page as a Candidate. Please go to job listing page.");
         }
-        return <Navigate to="/" />;
-
-    }
+        return <Navigate to="/" />; }
 
     return children;
 }

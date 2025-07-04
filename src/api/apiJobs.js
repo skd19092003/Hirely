@@ -1,5 +1,8 @@
 import supabaseClient from "@/utils/supabase";
 
+//this __ means options={} ,not providing anything from the custom hook
+// only token and ...args can be send thru function()
+
 // Fetch Jobs
 export async function getJobs(token, { location, company_id, searchQuery }) {
   const supabase = await supabaseClient(token);
@@ -93,6 +96,9 @@ export async function updateHiringStatus(token,{job_id}, isopen) {
 
   return data;
 } 
+//this __ means options={} ,not providing anything from the custom hook
+// only token and ...args can be send thru function()
+
 export async function addNewJob(token, __ , jobData ) {
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase.from("jobs")

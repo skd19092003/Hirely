@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { z } from "zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useFetch from "@/hooks/usefetch";
 import { applyToJob } from "@/api/apiApplications";
@@ -97,15 +97,16 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
 
       <DrawerContent className=" sm:min-h-[40%] min-h-[35%] ">
         <DrawerHeader className="space-y-2">
-          <DrawerTitle className="sm:text-[25px] text-bold text-xl">
+          <DrawerTitle className="sm:text-[25px] font-bold text-xl">
             Apply For {job?.title} at {job?.company?.name}
           </DrawerTitle>
-          <DrawerDescription className="sm:text-[20px] text-semibold text-[14px]">
+          <DrawerDescription className="sm:text-[20px]  text-[14px]">
             Please Fill the Form Below.
           </DrawerDescription>
         </DrawerHeader>
 
-        <form
+        <Form
+        control={control}
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 p-4 pb-0"
         >
@@ -142,7 +143,7 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
                   <RadioGroupItem value="intermediate" id="intermediate" />
                   <Label
                     htmlFor="intermediate"
-                    className="font-semiboldbold  lg:text-[16px]"
+                    className=" lg:text-[16px]"
                   >
                     Intermediate (Ongoing or Completed)
                   </Label>
@@ -151,7 +152,7 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
                   <RadioGroupItem value="Graduate" id="Graduate" />
                   <Label
                     htmlFor="Graduate"
-                    className="font-semiboldbold  lg:text-[16px]"
+                    className="  lg:text-[16px]"
                   >
                     Graduate (Ongoing or Completed)
                   </Label>
@@ -160,7 +161,7 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
                   <RadioGroupItem value="Post-Graduate" id="Post-Graduate" />
                   <Label
                     htmlFor="Post-Graduate"
-                    className="font-semiboldbold  lg:text-[16px]"
+                    className="lg:text-[16px]"
                   >
                     Post-Graduate (Ongoing or Completed)
                   </Label>
@@ -192,7 +193,7 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
           <Button variant="blue" type="submit" size="lg" className="w-full ">
             Submit
           </Button>
-        </form>
+        </Form>
 
         <DrawerFooter className="gap-4">
           <DrawerClose>

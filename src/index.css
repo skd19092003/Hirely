@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -64,8 +65,52 @@
   color: white;
 }
 
+/* Add this to your global CSS (e.g., index.css or App.css) */
+.custom-mdeditor {
+  background: rgba(30, 41, 59, 0.85); /* slate-800 with opacity */
+  color: #f1f5f9; /* slate-100 */
+}
 
+.custom-mdeditor 
+.custom-mdeditor .w-md-editor-content {
+  background: rgba(30, 41, 59, 0.85) !important; /* toolbar and content */
+  color: #f1f5f9 !important;
+}
 
+.custom-mdeditor-preview {
+  background: rgba(30, 41, 59, 0.85) !important;
+  color: #f1f5f9 !important;
+}
+
+/* Make sure markdown lists show bullets/numbers and are visible on dark backgrounds */
+/* //for mdeditor in post-job */
+.custom-mdeditor-preview ul,
+.custom-mdeditor-preview ol {
+  list-style-position: inside !important;
+  color: #f1f5f9 !important; /* or your desired text color */
+}
+
+.custom-mdeditor-preview ul {
+  list-style-type: disc !important;
+}
+
+.custom-mdeditor-preview ol {
+  list-style-type: decimal !important;
+}
+
+.custom-mdeditor-preview li::marker {
+  color: #f1f5f9 !important; /* marker color for dark backgrounds */
+}
+
+/* Make sure MDEditor toolbar icons are always visible */
+.custom-mdeditor .w-md-editor-toolbar button svg,
+.custom-mdeditor .w-md-editor-toolbar button span {
+  color: #f1f5f9 !important; /* or any visible color */
+  fill: #f1f5f9 !important;
+}
+.custom-mdeditor .w-md-editor-toolbar {
+  background: rgba(30,41,59,0.85) !important;
+}
 
 @layer base {
   * {

@@ -84,14 +84,15 @@ const JobCard = ({
 
             <CardContent>
                 <div className='flex justify-between' >
-                    {job.company && <img src={job.company.logo_url} alt={job.company.name} className=" h-10 " />}
+                    {job.company && <img src={job.company.logo_url} alt={job.company.name} className=" max-h-7 lg:h-10 " />}
                     <div className='flex items-center gap-2 '>
                         <MapPin size={16} /> {job.location || 'Remote'}
 
                     </div>
                 </div>
                 <hr className="border-t-2 border-white my-5 p-0" />
-                {job.description.substring(0, job.description.indexOf("."))}
+                {job.description.split(' ').slice(0, 15).join(' ') + '...'}
+                 
             </CardContent>
 
             <CardFooter className="flex gap-7">

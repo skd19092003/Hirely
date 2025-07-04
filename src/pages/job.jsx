@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import MDEditor from "@uiw/react-md-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {ApplyJobDrawer} from "@/components/ui/apply-job";
+import {ApplyJobDrawer} from "@/components/apply-job";
 import ApplicationCard from "@/components/ApplicationCard";
 
 
@@ -46,6 +46,7 @@ const handleHiringStatusChange = (value) => {
     if (isLoaded) {
       fnjob();
     }
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   if (!isLoaded || loadingJob) {

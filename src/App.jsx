@@ -12,6 +12,7 @@ import Savedjobs from './pages/saved-job';
 import { ThemeProvider } from './components/theme-provider';
 import Protectedroute from './components/protected-route';
 import StarfieldBackground from './components/StarfieldBackground';
+import RemotiveRemoteJobs from './pages/remotiveRemoteJobs';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,14 @@ const router = createBrowserRouter([
         element: (
           <Protectedroute>
             <Savedjobs />
+          </Protectedroute>
+        ),
+      },
+      {
+        path: '/remotiveRemoteJobs',
+        element: (
+          <Protectedroute>
+            <RemotiveRemoteJobs />
           </Protectedroute>
         ),
       }

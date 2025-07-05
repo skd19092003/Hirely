@@ -32,6 +32,7 @@ const JobCard = ({
     const { fn: fnsavedJob, data: savedJob, loading: loadingSavedJob } = useFetch(saveJob, { alreadySaved: saved });
     //alreadySaved is an option that will be passed to the saveJob api
     
+    
 
     //here we are using useFetch to create a function fnsavedJob that will call the saveJob api
     //and we are passing the job id and user id to the api to save the job for the user

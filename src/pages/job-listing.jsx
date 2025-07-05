@@ -16,6 +16,8 @@ import {
   SelectGroup,
 } from "@/components/ui/select";
 import { State } from "country-state-city";
+
+import { useNavigate } from "react-router-dom";
 //so jobcard is withut curly braces because it is a default export in jobcard.jsx
 //if it was a named export const jobcard = {} then we would have to use curly braces like {JobCard}
 //because There can be only one default export per file.
@@ -27,7 +29,8 @@ const Joblisting = () => {
   const [company_id, setCompany_id] = useState("");
 
   const { isLoaded } = useUser();
-
+  //useNavigate is used to navigate to the remotiveRemoteJobs page
+  const navigate = useNavigate();
   // const {session} = useSession();
   // //session is used to get the user data from clerk basically the token of the user
 
@@ -109,6 +112,15 @@ const Joblisting = () => {
         <h2 className="gradient-title text-4xl font-extrabold   sm:text-5xl lg:text-7xl">
           Latest Jobs
         </h2>
+
+        <Button
+        variant="blue"
+        onClick={() => navigate("/remotiveRemoteJobs")}
+        className="mt-7 p-6 "
+      >
+        Show Remote Jobs
+      </Button>
+
       </div>
 
       <form className="m-5 flex flex-row gap-5 ">

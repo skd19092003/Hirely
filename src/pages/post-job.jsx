@@ -177,9 +177,7 @@ const Postjob = () => {
             </div>
           )}
         />
-        {errors.errorCreateJob && (
-          <p className="text-red-500">{errors?.errorCreateJob?.message}</p>
-        )}
+
         {errorCreateJob?.message && (
           <p className="text-red-500">{errorCreateJob?.message}</p>
         )}

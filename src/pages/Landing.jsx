@@ -105,9 +105,9 @@ const Landingpage = () => {
       {/* //banner */}
       <div className='flex flex-row justify-evenly w-full flex-wrap gap-y-5 gap-x-1 sm:gap-10 lg:gap-16 '>
 
-        <img src="\public\ai-crowd.png" alt="banner1" className='aspect-square max-w-[120px]  sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
-        <img src="\public\dream-job-2904780_640.jpg" alt="banner2" className='aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg ' />
-        <img src="\public\japan-4141578_640.jpg" alt="banner3" className=' aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
+        <img src="/ai-crowd.png" alt="banner1" className='aspect-square max-w-[120px]  sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
+        <img src="/dream-job-2904780_640.jpg" alt="banner2" className='aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg ' />
+        <img src="/japan-4141578_640.jpg" alt="banner3" className=' aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
       </div>
 
 

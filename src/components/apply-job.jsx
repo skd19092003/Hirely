@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { z } from "zod";
-import { Controller, Form, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useFetch from "@/hooks/usefetch";
 import { applyToJob } from "@/api/apiApplications";
@@ -105,8 +105,7 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
           </DrawerDescription>
         </DrawerHeader>
 
-        <Form
-        control={control}
+        <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 p-4 pb-0"
         >
@@ -193,7 +192,7 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
           <Button variant="blue" type="submit" size="lg" className="w-full ">
             Submit
           </Button>
-        </Form>
+        </form>
 
         <DrawerFooter className="gap-4">
           <DrawerClose asChild>

@@ -66,6 +66,7 @@ const AddCompanyDrawer = ({ fetchCompanies, companies   }) => {
     fn: fnAddCompany,
   } = useFetch(addNewCompany);
 
+  //frontend logic is great as it prevents unneccesary add companylog in storage buckets
  const onSubmit = async (data) => {
   // Check for duplicate name (case-insensitive)
   const exists = companies?.some(

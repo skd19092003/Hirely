@@ -196,7 +196,9 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
         </Form>
 
         <DrawerFooter className="gap-4">
-          <DrawerClose>
+          <DrawerClose asChild>
+            {/* asChild tells the DrawerClose component to not render its own <button> element */}
+            {/* Instead, it passes its props to the child Button component */}
             <Button variant="gray" size="lg" className="w-full">
               Cancel
             </Button>

@@ -28,7 +28,7 @@ const Joblisting = () => {
   const [location, setLocation] = useState("");
   const [company_id, setCompany_id] = useState("");
 
-  const { isLoaded } = useUser();
+  const { isLoaded,user } = useUser();
   //useNavigate is used to navigate to the remotiveRemoteJobs page
   const navigate = useNavigate();
   // const {session} = useSession();
@@ -83,7 +83,7 @@ const Joblisting = () => {
   //     setSearchQuery(query);
   //   }
   // }
-
+ 
   const clearfilters = () => {
     setLocation("");
     setCompany_id("");
@@ -206,7 +206,7 @@ This prevents the .map error and allows your jobs filtering to work. f Companies
       {/* for loading jobs */}
 
       {loadingjobs === false && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full px-2">
           {jobs?.length ? (
             jobs.map((job) => {
               //component created called jobcard to display job details
@@ -216,6 +216,9 @@ This prevents the .map error and allows your jobs filtering to work. f Companies
                   key={job.id}
                   job={job}
                   savedInit={job?.saved?.length > 0}
+                  //also add it in joblisting so recruiters can identify their own jobs and delete directly from here
+                  isMyJob={job?.recruiter_id === user?.id}
+                  onJobSaved={fnjobs}
                 />
               );
             })

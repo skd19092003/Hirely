@@ -6,7 +6,7 @@ import { Contact2 } from 'lucide-react'
 
 const Footer = () => {
   return (
-   <div className='p-6 lg:p-8 text-center flex flex-col items-center justify-center  bg-slate-900 mt-2 gap-y-1'>
+   <div className='p-6 lg:p-8 text-center flex flex-col items-center justify-center  bg-slate-900 mt-2 '>
          <p className='flex items-center flex-row gap-x-2'>
            MADE WITH ❤️ BY 
            <Contact2 size={18} />

@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 
 // to check if a user is signin or not we get bunch of hooks from clerk
 import { useUser } from '@clerk/clerk-react'
@@ -17,8 +16,7 @@ const Protectedroute = ({ children }) => {
     // useState does cause a re-render when you update it.
     //useRef is perfect for tracking a value across renders without causing re-renders.
     // useState is for values that should trigger a UI update when changed.
-    const alerted = useRef(false);
-
+   
     if (isLoaded && !isSignedIn && isSignedIn !== undefined) {
         //if user is loaded means the user data is fetched and if user is not signed in then we redirect to sign-in page
         return <Navigate to="/?sign-in=true" />;
@@ -37,17 +35,9 @@ const Protectedroute = ({ children }) => {
     //if candidate wants to go to post job through post joblink button then we redirect to job listing page and send a alert that cannot access this page
     if (isLoaded && user?.unsafeMetadata?.role === 'candidate' && pathname === '/post-job') {
         //keep the order of statements in mind
-       if (!alerted.current) {
-            alerted.current = true;
-//             The first time this code runs, alerted.current is false, 
-// so the alert shows and alerted.current is set to true.
-// On any further renders (while the component is mounted), alerted.current stays true,
-//  so the alert does not show again.
-            alert("You are not allowed to access this page as a Candidate. Please go to job listing page.");
-        }
-        return <Navigate to="/" />; }
-
+        return <Navigate to="/job-listing" />; 
+    }        
     return children;
-}
+    }
 
 export default Protectedroute;

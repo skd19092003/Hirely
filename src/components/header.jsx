@@ -9,7 +9,7 @@ import {
   UserButton,
   SignUp,
 } from "@clerk/clerk-react";
-import { BriefcaseBusiness, Heart, PenBox, HouseIcon } from "lucide-react";
+import { BriefcaseBusiness, Heart, PenBox, HouseIcon, Joystick, House } from "lucide-react";
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 // useUser is a hook that provides information about the currently signed-in user, such as their profile and authentication status.
@@ -68,6 +68,8 @@ const Header = () => {
       navigate("/", { replace: true });
     }
   }, [user, search, navigate]);
+
+
 
   // const handleoverlayclick = (e) => {
   //   //if the click is on the overlay div then close the modal
@@ -175,16 +177,36 @@ const Header = () => {
               }}
             >
               <UserButton.MenuItems>
-                <UserButton.Link
-                  label="My jobs"
-                  labelIcon={<BriefcaseBusiness size={15} />}
+                {user?.unsafeMetadata?.role === "recruiter" && (<UserButton.Link
+                  label="My Jobs"
+                  labelIcon={<BriefcaseBusiness size={15}  />}
                   href="/my-jobs"
-                />
+                />)}
+                {user?.unsafeMetadata?.role === "candidate" && (<UserButton.Link
+                  label="My Applications"
+                  labelIcon={<BriefcaseBusiness size={15}  />}
+                  href="/my-jobs"
+                />)}
                 <UserButton.Link
-                  label="saved jobs"
-                  labelIcon={<Heart size={15} />}
+                  label="Saved Jobs"
+                  labelIcon={<Heart size={15} fill="red"/>}
                   href="/saved-job"
                 />
+                <UserButton.Link
+                  label="Job Listings"
+                  labelIcon={<House size={15}  />}
+                  href="/job-listing"
+                />
+                <UserButton.Link
+                  label="Remote Job Listings"
+                  labelIcon={<House size={15}  />}
+                  href="/remotiveRemoteJobs"
+                />
+                {user?.unsafeMetadata?.role === "recruiter" && (<UserButton.Link
+                  label="Post a Job (For Recruiters)"
+                  labelIcon={<PenBox size={15}  />}
+                  href={user?.unsafeMetadata?.role === "recruiter" ? "/post-job" : "/job-listing"}
+                />)}
               </UserButton.MenuItems>
             </UserButton>
           </SignedIn>
@@ -333,81 +355,3 @@ z-50: Sets a high z-index (50), so the element appears above most other conten *
 export default Header;
 
 
-//  {showsignin2 && (
-//         <div
-//           className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
-//           onClick={handleoverlayclick}
-//         >
-//           <div className="absolute top-1 right-1 bg-white text-black p-4 lg:p-8 rounded shadow-lg z-50 w-auto lg:w-[450px] flex flex-col items-center justify-center">
-//             <div className="font-bold mb-1 text-base lg:py-3 lg:text-4xl">
-//               Demo Account
-//             </div>
-
-//             <div className="bg-slate-300 sm:p-5 mb-3  flex flex-col items-center justify-center">
-//               <p className="font-extrabold py-2">
-//                 -USE THIS if onboarding= JOB SEEKER-
-//               </p>
-//               <div className="flex items-center justify-center gap-2 mb-2 lg:text-2xl ">
-//                 Email:{" "}
-//                 <span className="font-mono lg:text-2xl">demo@yourapp.com</span>
-//                 <button
-//                   className="text-xs lg:text-xl px-2 py-1 lg:px-5   bg-slate-200 rounded hover:bg-green-500"
-//                   onClick={() =>
-//                     navigator.clipboard.writeText("demo@yourapp.com")
-//                   }
-//                 >
-//                   Copy
-//                 </button>
-//               </div>
-//               <div className="flex items-center justify-center gap-2 mb-2 lg:text-2xl lg:gap-3">
-//                 Password: <span className="font-mono">demopassword</span>
-//                 <button
-//                   className="text-xs lg:text-xl px-2 py-1 bg-slate-200 rounded hover:bg-green-500 lg:px-5"
-//                   onClick={() => navigator.clipboard.writeText("demopassword")}
-//                 >
-//                   Copy
-//                 </button>
-//               </div>
-//             </div>
-
-//             <div className="bg-slate-300 sm:p-5 mb-3  flex flex-col items-center justify-center">
-//               <p className="font-extrabold py-2">
-//                 -USE THIS if onboarding= EMPLOYER-
-//               </p>
-//               <div className="flex items-center justify-center gap-2 mb-2 lg:text-2xl ">
-//                 Email:{" "}
-//                 <span className="font-mono lg:text-2xl">demo2@yourapp.com</span>
-//                 <button
-//                   className="text-xs lg:text-xl px-2 py-1 lg:px-5   bg-slate-200 rounded hover:bg-green-500"
-//                   onClick={() =>
-//                     navigator.clipboard.writeText("demo2@yourapp.com")
-//                   }
-//                 >
-//                   Copy
-//                 </button>
-//               </div>
-//               <div className="flex items-center justify-center gap-2 mb-2 lg:text-2xl lg:gap-3">
-//                 Password: <span className="font-mono">demo2password</span>
-//                 <button
-//                   className="text-xs lg:text-xl px-2 py-1 bg-slate-200 rounded hover:bg-green-500 lg:px-5"
-//                   onClick={() => navigator.clipboard.writeText("demo2password")}
-//                 >
-//                   Copy
-//                 </button>
-//               </div>
-//             </div>
-
-//             <div className="text-xs text-slate-600 mt-2 lg:text-xl font-semibold">
-//               Copy & paste these to sign in instantly!
-//             </div>
-//           </div>
-
-//           <div className="relative top-14">
-//           <SignIn
-//             initialValues={{ emailAddress: "demo@yourapp.com" }}
-//             signUpForceRedirectUrl="/onboarding"
-//             fallbackRedirectUrl="/onboarding"
-//             />
-//             </div>
-//         </div>
-//       )}

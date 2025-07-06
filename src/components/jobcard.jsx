@@ -10,6 +10,8 @@ import { Button } from './ui/button';
 import useFetch from '@/hooks/usefetch';
 import { saveJob } from '@/api/apiJobs';
 import { useState, useEffect } from 'react';
+import { deleteJob } from '@/api/apiJobs';
+import { BarLoader } from 'react-spinners';
 
 
 
@@ -40,7 +42,12 @@ const JobCard = ({
     const { user } = useUser();
     const handleSaveJob = async () => {
         await fnsavedJob({ user_id: user.id, job_id: job.id });
+        
         onJobSaved();
+        //onJobSaved is the function that will be called when the job is saved
+        //it will be passed as a prop to the JobCard component
+        //it will be used to update the UI or perform any other action after the job is saved
+
         
         //this will call the onJobSaved function passed as a prop to the JobCard component
         //this function can be used to update the UI or perform any other action after the job
@@ -49,6 +56,13 @@ const JobCard = ({
     //it will call the fnsavedJob function which will call the saveJob api with
     //the user id and job id to save the job for the user
 
+    const {fn: fnDeleteJob, loading: loadingDeleteJob } = useFetch(deleteJob, {job_id: job.id});
+    const handleDeleteJob = async () => {
+        await fnDeleteJob({ job_id: job.id });
+        onJobSaved();
+        //onjobsaved is a function that will be called when the job is deleted
+        //it used for delete and also saved
+    };
      
     useEffect(() => {
         // This useEffect will run whenever the savedJob changes
@@ -72,13 +86,21 @@ const JobCard = ({
 
 
     return (
-        <Card className="flex flex-col justify-between">
+        <Card className="flex flex-col justify-between mx-3">
+            {loadingDeleteJob && <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />}
+            {/* //this get disabled once trash icon complete its process , time between clicking trashicon and delete */}
             <CardHeader>
                 <CardTitle className="flex justify-between font-bold" >
                     {job.title}
-                    {!isMyJob ? (
-                        <Trash2Icon fill="grey" size={28} className='text-white cursor-pointer ' />
-                    ) : null}
+                    {isMyJob && (
+                        <Trash2Icon
+                         fill="grey"
+                          size={28}
+                           className='text-white cursor-pointer'
+                           onClick={handleDeleteJob}
+                           disabled={loadingDeleteJob}
+                           />
+                    )}
 
                 </CardTitle>
             </CardHeader>
@@ -103,10 +125,10 @@ const JobCard = ({
                     </Button>
                 </Link>
 
+                {/* // If the job is not posted by the current user, show the save/unsave button
+                // If the job is posted by the current user, do not show the save/unsave button
+                // This is to prevent the user from saving their own job */}
                 {!isMyJob && (
-                    // If the job is not posted by the current user, show the save/unsave button
-                    // If the job is posted by the current user, do not show the save/unsave button
-                    // This is to prevent the user from saving their own job
                     <Button
                         variant=""
                         className="p-4 rounded-b-lg"

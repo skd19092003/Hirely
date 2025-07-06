@@ -42,7 +42,7 @@ export async function getJobs(token, { location, company_id, searchQuery }) {
 // savedata will save into database the savedjob and alreadysaved will check whether the job is already saved or not
 export async function saveJob(token, { alreadySaved }, saveData) {
   const supabase = await supabaseClient(token);
-
+//this was saving the job to the database
   if(alreadySaved){
     const { data, error: deleteerror } = await supabase
      .from("saved_jobs")
@@ -86,6 +86,8 @@ export async function getSingleJob(token,{job_id}) {
 
   return data;
 } 
+
+//this was updating the hiring status of the job
 export async function updateHiringStatus(token,{job_id}, isopen) {
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase.from("jobs").update({isopen:isopen}).eq("id",job_id).single();
@@ -99,6 +101,8 @@ export async function updateHiringStatus(token,{job_id}, isopen) {
 //this __ means options={} ,not providing anything from the custom hook
 // only token and ...args can be send thru function()
 
+
+//this was creating the new job
 export async function addNewJob(token, __ , jobData ) {
   const supabase = await supabaseClient(token);
   const { data, error } = await supabase.from("jobs")
@@ -112,3 +116,52 @@ export async function addNewJob(token, __ , jobData ) {
 
   return data;
 } 
+
+//this was fetching the saved jobs
+export async function getSavedJobs(token) {
+  const supabase = await supabaseClient(token);
+  const { data, error } = await supabase
+    .from("saved_jobs")
+    .select("*, job: jobs(*, company: companies(name,logo_url))");
+//(*)only provides jobid and useriud so other things added
+  if (error) {
+    console.error("Error fetching Saved Jobs:", error);
+    return null;
+  }
+
+  return data;
+}
+
+//this was fetching the my jobs
+export async function getMyJobs(token, {user_id}) {
+  const supabase = await supabaseClient(token);
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*, company: companies(name,logo_url)")
+    .eq("recruiter_id", user_id);
+
+//(*)only provides jobid and useriud so other things added
+  if (error) {
+    console.error("Error fetching Jobs:", error);
+    return null;
+  }
+
+  return data;
+}
+
+  //this is for deleting the job
+export async function deleteJob(token, {job_id}) {
+  const supabase = await supabaseClient(token);
+  const { data, error } = await supabase
+    .from("jobs")
+    .delete()
+    .eq("id", job_id)
+    .select();
+
+//(*)only provides jobid and useriud so other things added
+  if (error) {
+    console.error("Error deleting Jobs:", error);
+    return null;
+  }
+  return data;
+}

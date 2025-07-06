@@ -20,15 +20,14 @@
 - **External Job Applications:** Direct links to apply on company websites
 
 ### Advanced Job Management
-- **Smart Pagination:** Efficient pagination system showing 6 jobs per page with intelligent page navigation
 - **Advanced Filtering:** Filter jobs by location, company, and search by job title
 - **Job Saving:** Save interesting jobs for later review
 - **Application Tracking:** Track your job applications and their status
+- **Smart Pagination:** Efficient pagination system showing 6 jobs per page with intelligent page navigation
 - **Real-time Updates:** Live updates for job status and application counts
 
 ### User Experience Features
 - **Responsive Design:** Fully responsive across all devices (mobile, tablet, desktop)
-- **Dark/Light Theme:** Theme switching with system preference detection
 - **Loading States:** Smooth loading animations and skeleton screens
 - **Error Handling:** Comprehensive error handling with user-friendly messages
 

@@ -6,15 +6,26 @@ import { Link } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+// Import pagination components
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+  } from "@/components/ui/pagination";
+
 const RemotiveRemoteJobs = () => {
   const [jobs, setJobs] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
-
-//   const[page, setPage] = useState(1);
-  //by default its page set to 1
+// Pagination state
+const [currentPage, setCurrentPage] = useState(1);
+const [jobsPerPage] = useState(9);
 
 
 //   User A visits → API call to Remotive → Cache stored in User A's browser
@@ -42,6 +53,60 @@ const RemotiveRemoteJobs = () => {
       });
     }
   }, []);
+
+
+
+    // Calculate pagination values
+    const indexOfLastJob = currentPage * jobsPerPage;
+    const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+    const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+    const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
+  
+    // Reset to first page when search changes
+    useEffect(() => {
+      setCurrentPage(1);
+    }, [searchQuery]);
+  
+    // Handle page changes
+    const handlePageChange = (pageNumber) => {
+      setCurrentPage(pageNumber);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+      // Generate page numbers for smart pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          pages.push(i);
+        }
+      } else if (currentPage >= totalPages - 2) {
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+          pages.push(i);
+        }
+      }
+    }
+    return pages;
+  };
+
+  
+
+
+
+
+
+
+
 
   // Filter jobs based on search query
   useEffect(() => {
@@ -96,8 +161,9 @@ const RemotiveRemoteJobs = () => {
         </div>
       )}
     
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-2">
-        {filteredJobs.map((job) => (
+       {/* Display current page jobs */}
+       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-2">
+        {currentJobs.map((job) => (
           <RemoteJobCard
             key={job.id}
             job={{
@@ -113,11 +179,56 @@ const RemotiveRemoteJobs = () => {
               publication_date: job.publication_date,
               category: job.category,
               company_logo: job.company_logo,
-              
             }}
           />
         ))}
       </div>
+       {/* Pagination component */}
+       {totalPages > 1 && (
+        <div className="flex justify-center mt-8 mb-8">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                />
+              </PaginationItem>
+
+              {getPageNumbers().map((pageNumber) => (
+                <PaginationItem key={pageNumber}>
+                  <PaginationLink
+                    onClick={() => handlePageChange(pageNumber)}
+                    isActive={currentPage === pageNumber}
+                    className="cursor-pointer"
+                  >
+                    {pageNumber}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              {currentPage < totalPages - 3 && totalPages > 5 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+                <PaginationItem>
+                <PaginationNext 
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
+
+      {/* Page info */}
+      {filteredJobs.length > 0 && (
+        <div className="text-center text-gray-400 text-sm mb-4">
+          Showing {indexOfFirstJob + 1} to {Math.min(indexOfLastJob, filteredJobs.length)} of {filteredJobs.length} jobs
+        </div>
+      )}
 
       {/* No results message */}
       {filteredJobs.length === 0 && searchQuery && (

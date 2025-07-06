@@ -18,6 +18,16 @@ import {
 import { State } from "country-state-city";
 
 import { useNavigate } from "react-router-dom";
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 //so jobcard is withut curly braces because it is a default export in jobcard.jsx
 //if it was a named export const jobcard = {} then we would have to use curly braces like {JobCard}
 //because There can be only one default export per file.
@@ -28,9 +38,14 @@ const Joblisting = () => {
   const [location, setLocation] = useState("");
   const [company_id, setCompany_id] = useState("");
 
-  const { isLoaded,user } = useUser();
+  const { isLoaded, user } = useUser();
   //useNavigate is used to navigate to the remotiveRemoteJobs page
   const navigate = useNavigate();
+
+  //for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [jobsPerPage] = useState(6);
+
   // const {session} = useSession();
   // //session is used to get the user data from clerk basically the token of the user
 
@@ -58,7 +73,7 @@ const Joblisting = () => {
     if (isLoaded) fnjobs();
     // This will call the fnjobs function to fetch jobs when the component mounts
     // The empty dependency array ensures this runs only once when the component mounts
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, location, company_id, searchQuery]);
 
   const { fn: fnCompanies, data: Companies } = useFetch(getCompanies);
@@ -71,7 +86,7 @@ const Joblisting = () => {
     if (isLoaded) fnCompanies();
     // This will call the fnCompanies function to fetch companies when the component mounts
     // The empty dependency array ensures this runs only once when the component mounts
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded]);
 
   //now the handle search buton which could have been done already done with onchange
@@ -83,7 +98,51 @@ const Joblisting = () => {
   //     setSearchQuery(query);
   //   }
   // }
- 
+
+  // Calculate pagination values
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = jobs?.slice(indexOfFirstJob, indexOfLastJob) || [];
+  const totalPages = Math.ceil((jobs?.length || 0) / jobsPerPage);
+  //for pagination
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, location, company_id]);
+  // Handle page changes and auto scroll to top
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  // Generate page numbers for smart pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 5; i++) {
+          pages.push(i);
+        }
+      } else if (currentPage >= totalPages - 2) {
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+          pages.push(i);
+        }
+      }
+    }
+    return pages;
+  };
+
+
+  //for clearing the filters
   const clearfilters = () => {
     setLocation("");
     setCompany_id("");
@@ -91,7 +150,6 @@ const Joblisting = () => {
   const clearfilterssearch = () => {
     setSearchQuery("");
   };
-
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   fnjobs();
@@ -114,12 +172,12 @@ const Joblisting = () => {
         </h2>
 
         <Button
-        variant="blue"
-        onClick={() => navigate("/remotiveRemoteJobs")}
-        className="mt-7 p-6 "
-      >
-        Show Remote Jobs
-      </Button>
+          variant="blue"
+          onClick={() => navigate("/remotiveRemoteJobs")}
+          className="mt-7 p-6 "
+        >
+          Show Remote Jobs
+        </Button>
 
       </div>
 
@@ -164,7 +222,7 @@ const Joblisting = () => {
               })}
             </SelectGroup>
           </SelectContent>
-        </Select> 
+        </Select>
 
         <Select
           value={company_id}
@@ -205,7 +263,7 @@ This prevents the .map error and allows your jobs filtering to work. f Companies
       )}
       {/* for loading jobs */}
 
-      {loadingjobs === false && (
+      {/* {loadingjobs === false && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full px-2">
           {jobs?.length ? (
             jobs.map((job) => {
@@ -225,7 +283,74 @@ This prevents the .map error and allows your jobs filtering to work. f Companies
           ) : (
             <div className="mx-5 ">No jobs found.</div>
           )}
-        </div>
+        </div> */}
+      {loadingjobs === false && (
+        <>
+          {/* Display current page jobs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full px-2">
+            {currentJobs.length ? (
+              currentJobs.map((job) => {
+                return (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    savedInit={job?.saved?.length > 0}
+                    isMyJob={job?.recruiter_id === user?.id}
+                    onJobSaved={fnjobs}
+                  />
+                );
+              })
+            ) : (
+              <div className="mx-5">No jobs found.</div>
+            )}
+          </div>
+          {/* Pagination component */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-8 mb-8">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+
+                  {getPageNumbers().map((pageNumber) => (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        onClick={() => handlePageChange(pageNumber)}
+                        isActive={currentPage === pageNumber}
+                        className="cursor-pointer"
+                      >
+                        {pageNumber}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+
+                  {currentPage < totalPages - 3 && totalPages > 5 && (
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  )}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
+      {/* Page info */}
+      {jobs?.length > 0 && (
+            <div className="text-center text-gray-400 text-sm mb-4">
+              Showing {indexOfFirstJob + 1} to {Math.min(indexOfLastJob, jobs.length)} of {jobs.length} jobs
+            </div>
+          )}
+        </>
       )}
     </div>
   );

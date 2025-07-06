@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getRemotiveJobs } from "@/api/apiRemotive";
-import RemoteJobCard from "@/components/remotejobcard";
+import RemoteJobCard from "@/components/remoteJobCard";
 import { BarLoader } from "react-spinners";
 import { Link } from 'react-router-dom';
 import { Input } from "@/components/ui/input";

@@ -127,17 +127,17 @@ const [jobsPerPage] = useState(9);
   if (loading) return <BarLoader width="100%" color="#36d7b7" className="mt-10" />;
 
   return (
-    <div className="flex flex-col gap-6 items-center justify-center mt-10 lg:mb-8 lg:mt-0">
+    <div className="flex flex-col gap-6 items-center justify-center mt-10 lg:mb-8 lg:mt-0 w-[100vw]">
       <h2 className="gradient-title text-4xl font-extrabold   sm:text-5xl lg:text-7xl">
         Remote Jobs 
       </h2>
-      <h3 className="text-gray-300 text-xl flex flex-col sm:flex-row items-center justify-center">
+      <h3 className="text-gray-300 text-xl flex flex-col sm:flex-row items-center justify-center m-0">
         Find the latest remote jobs sourced from
         <Link to="https://remotive.com" target="_blank" className="text-blue-500 bg-blue-500/10 px-2 py-1 rounded-md ml-2 hover:bg-blue-500/50"> Remotive.com</Link>
       </h3>
     
       {/* Search Filter */}
-      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-2xl px-4">
+      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-2xl px-4 justify-center ">
         <Input
           type="text"
           placeholder="Search by job title..."

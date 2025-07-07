@@ -13,8 +13,7 @@ import { ThemeProvider } from './components/theme-provider';
 import Protectedroute from './components/protected-route';
 import StarfieldBackground from './components/StarfieldBackground';
 import RemotiveRemoteJobs from './pages/remotiveRemoteJobs';
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/react"
+
 
 const router = createBrowserRouter([
   {
@@ -95,8 +94,6 @@ function App() {
    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <StarfieldBackground />
       <RouterProvider router={router} />
-      <Analytics />
-      <SpeedInsights />
     </ThemeProvider>
     
     // ✅ So What Happens?

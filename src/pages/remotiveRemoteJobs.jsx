@@ -127,7 +127,7 @@ const [jobsPerPage] = useState(9);
   if (loading) return <BarLoader width="100%" color="#36d7b7" className="mt-10" />;
 
   return (
-    <div className="flex flex-col gap-6 items-center justify-center mt-10 lg:mb-8 lg:mt-0 w-[100vw]">
+    <div className="flex flex-col gap-6 items-center justify-center mt-10 lg:mb-8 lg:mt-0 w-full max-w-full overflow-hidden">
       <h2 className="gradient-title text-4xl font-extrabold   sm:text-5xl lg:text-7xl">
         Remote Jobs 
       </h2>
@@ -162,7 +162,7 @@ const [jobsPerPage] = useState(9);
       )}
     
        {/* Display current page jobs */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-2">
+       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-4 max-w-full">
         {currentJobs.map((job) => (
           <RemoteJobCard
             key={job.id}
@@ -185,41 +185,43 @@ const [jobsPerPage] = useState(9);
       </div>
        {/* Pagination component */}
        {totalPages > 1 && (
-        <div className="flex justify-center mt-8 mb-8">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious 
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                />
-              </PaginationItem>
-
-              {getPageNumbers().map((pageNumber) => (
-                <PaginationItem key={pageNumber}>
-                  <PaginationLink
-                    onClick={() => handlePageChange(pageNumber)}
-                    isActive={currentPage === pageNumber}
-                    className="cursor-pointer"
-                  >
-                    {pageNumber}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-
-              {currentPage < totalPages - 3 && totalPages > 5 && (
+        <div className="flex justify-center mt-8 mb-8 w-full px-4">
+          <div className="w-full max-w-full overflow-x-auto">
+            <Pagination className="w-full">
+              <PaginationContent className="flex-wrap justify-center">
                 <PaginationItem>
-                  <PaginationEllipsis />
+                  <PaginationPrevious 
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
                 </PaginationItem>
-              )}
-                <PaginationItem>
-                <PaginationNext 
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+
+                {getPageNumbers().map((pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      onClick={() => handlePageChange(pageNumber)}
+                      isActive={currentPage === pageNumber}
+                      className="cursor-pointer"
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+                {currentPage < totalPages - 3 && totalPages > 5 && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
+                  <PaginationItem>
+                  <PaginationNext 
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
       )}
 

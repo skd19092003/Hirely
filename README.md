@@ -1,4 +1,4 @@
-# Hirely live= hirelyskd.vercel.app
+# Hirely live= (https://hirelyskd.vercel.app/)
 
 **Hirely** is a modern job portal designed for both job seekers and employers. Built with React, it offers a seamless and responsive user experience with advanced features for job discovery and management.
 

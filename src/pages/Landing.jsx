@@ -37,15 +37,18 @@ const Landingpage = () => {
         </p>
       </section>
 
-      <div className='flex flex-row gap-y-2 gap-x-1 sm:gap-y-5 sm:gap-x-8 lg:gap-x-16 lg:gap-y-8 mx-6 justify-center items-center'>
+      <div className='flex flex-row gap-1 sm:gap-4 lg:gap-8 xl:gap-10 mx-2 sm:mx-6 justify-center items-center'>
         {/* buttons */}
-        <Link to="/job-listing">
-          <Button variant="green" size="xl" onClick={e => {if (isRecruiter) {e.preventDefault();window.openGuestAccessModal();}}}>
+        <Link to="/job-listing" className="flex-1 sm:flex-none">
+          <Button variant="green" size="sm" className="w-full sm:w-auto px-2 sm:px-8 lg:px-12 xl:px-16 py-2 sm:py-4 lg:py-6 xl:py-7 text-xs sm:text-base lg:text-xl xl:text-2xl font-semibold" onClick={e => {if (isRecruiter) {e.preventDefault();window.openGuestAccessModal();}}}>
             Find Jobs</Button>
         </Link>
-        <span>Or</span>
-        <Link to="/post-job">
-          <Button variant="blue" size="xl"onClick={e => {if (isRecruiter) {e.preventDefault(); window.openGuestAccessModal();}}}>
+        <Link to="/remotiveRemoteJobs" className="flex-1 sm:flex-none">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto px-2 sm:px-8 lg:px-12 xl:px-16 py-2 sm:py-4 lg:py-6 xl:py-7 text-xs sm:text-base lg:text-xl xl:text-2xl font-semibold border-gray-400 text-gray-300 hover:bg-gray-700">
+            Remote Jobs</Button>
+        </Link>
+        <Link to="/post-job" className="flex-1 sm:flex-none">
+          <Button variant="blue" size="sm" className="w-full sm:w-auto px-2 sm:px-8 lg:px-12 xl:px-16 py-2 sm:py-4 lg:py-6 xl:py-7 text-xs sm:text-base lg:text-xl xl:text-2xl font-semibold" onClick={e => {if (isRecruiter) {e.preventDefault(); window.openGuestAccessModal();}}}>
             Post a Job</Button>
         </Link>
 
@@ -68,7 +71,7 @@ const Landingpage = () => {
               <img
                 src={path}
                 alt={name}
-               
+                loading="lazy"
                 //img ko chita kiya
                 className="h-9 sm:h-14 object-contain"
               />
@@ -105,9 +108,9 @@ const Landingpage = () => {
       {/* //banner */}
       <div className='flex flex-row justify-evenly w-full flex-wrap gap-y-5 gap-x-1 sm:gap-10 lg:gap-16 '>
 
-        <img src="/ai-crowd.png" alt="banner1" className='aspect-square max-w-[120px]  sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
-        <img src="/dream-job-2904780_640.jpg" alt="banner2" className='aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg ' />
-        <img src="/japan-4141578_640.jpg" alt="banner3" className=' aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
+        <img src="/ai-crowd.png" alt="banner1" loading="lazy" className='aspect-square max-w-[120px]  sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
+        <img src="/dream-job-2904780_640.jpg" alt="banner2" loading="lazy" className='aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg ' />
+        <img src="/japan-4141578_640.jpg" alt="banner3" loading="lazy" className=' aspect-square max-w-[120px] sm:max-w-[380px] md:max-w-[420px] h-auto rounded-lg' />
       </div>
 
 

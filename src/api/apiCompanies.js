@@ -3,7 +3,7 @@ import supabaseClient, { supabaseUrl } from "./../utils/supabase";
 //this __ means options={} ,not providing anything from the custom hook
 // only token and ...args can be send thru function()
 
-
+ 
 // Fetch Companies
 export async function getCompanies(token) {
   const supabase = await supabaseClient(token);

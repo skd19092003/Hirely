@@ -20,6 +20,16 @@ import { BarLoader } from 'react-spinners';
 //     Why use destructuring?
 // Cleaner and shorter code: You can use job directly instead of props.job.
 
+// Function to format date as dd.mm.yy
+const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}.${month}.${year}`;
+};
+
 const JobCard = ({
     job,
     isMyJob = false,
@@ -90,7 +100,7 @@ const JobCard = ({
             {loadingDeleteJob && <BarLoader className="mt-4" width={"100%"} color="#36d7b7" />}
             {/* //this get disabled once trash icon complete its process , time between clicking trashicon and delete */}
             <CardHeader>
-                <CardTitle className="flex justify-between font-bold" >
+                <CardTitle className="flex justify-between font-bold text-xl" >
                     {job.title}
                     {isMyJob && (
                         <Trash2Icon
@@ -106,13 +116,27 @@ const JobCard = ({
             </CardHeader>
 
             <CardContent>
-                <div className='flex justify-between' >
-                    {job.company && <img src={job.company.logo_url} alt={job.company.name} className=" max-h-7 lg:h-10 " />}
-                    <div className='flex items-center gap-2 '>
-                        <MapPin size={16} /> {job.location || 'Remote'}
-
+                {/* First row: Company logo and name */}
+                <div className='flex justify-between items-center gap-2 mb-3'>
+                    {job.company && (
+                        <>
+                            <img src={job.company.logo_url} alt={job.company.name} loading="lazy" className="max-h-6 lg:h-6 flex-shrink-0 max-w-[100px]" />
+                            <span className="text-lg lg:text-sm font-medium truncate">{job.company.name}</span>
+                        </>
+                    )}
+                </div>
+                
+                {/* Second row: Location and Posted date - 50/50 split */}
+                <div className='flex items-center mb-3 gap-2'>
+                    <div className='flex items-center gap-1 text-xs lg:text-sm text-gray-50 w-1/2'>
+                        <MapPin size={14} className="flex-shrink-0" /> 
+                        <span className="truncate">{job.location || 'Remote'}</span>
+                    </div>
+                    <div className='text-xs lg:text-sm text-gray-50 font-medium w-1/2 text-right'>
+                        Posted: {formatDate(job.created_at)}
                     </div>
                 </div>
+                
                 <hr className="border-t-2 border-white my-5 p-0" />
                 {job.description.split(' ').slice(0, 15).join(' ') + '...'}
                  

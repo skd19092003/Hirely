@@ -5,6 +5,13 @@ import { BarLoader } from "react-spinners";
 import { Link } from 'react-router-dom';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Import pagination components
 import {
@@ -19,10 +26,15 @@ import {
 
 const RemotiveRemoteJobs = () => {
   const [jobs, setJobs] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredJobs, setFilteredJobs] = useState([]);
+  
+  // Filter states
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [salaryFilter, setSalaryFilter] = useState("");
+
 // Pagination state
 const [currentPage, setCurrentPage] = useState(1);
 const [jobsPerPage] = useState(9);
@@ -44,7 +56,7 @@ const [jobsPerPage] = useState(9);
       setFilteredJobs(cachedJobs);
       setLoading(false);
     } else {
-      getRemotiveJobs({ page: 1, limit: 50 }).then((data) => {
+      getRemotiveJobs({ page: 1, limit: 120 }).then((data) => {
         setJobs(data);
         setFilteredJobs(data);
         setLoading(false);
@@ -108,20 +120,96 @@ const [jobsPerPage] = useState(9);
 
 
 
-  // Filter jobs based on search query
+  // Filter jobs based on search query and filters
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredJobs(jobs);
-    } else {
-      const filtered = jobs.filter(job =>
+    let filtered = jobs;
+
+    // Apply search filter
+    if (searchQuery.trim() !== "") {
+      filtered = filtered.filter(job =>
         job.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      setFilteredJobs(filtered);
     }
-  }, [searchQuery, jobs]);
+
+    // Apply category filter
+    if (categoryFilter !== "") {
+      filtered = filtered.filter(job => job.category === categoryFilter);
+    }
+
+    // Apply location filter
+    if (locationFilter !== "") {
+      if (locationFilter === "Worldwide") {
+        filtered = filtered.filter(job => 
+          job.candidate_required_location && 
+          job.candidate_required_location.toLowerCase().includes("worldwide")
+        );
+      } else if (locationFilter === "US Only") {
+        filtered = filtered.filter(job => 
+          job.candidate_required_location && 
+          (job.candidate_required_location.toLowerCase().includes("us") || 
+           job.candidate_required_location.toLowerCase().includes("united states") ||
+           job.candidate_required_location.toLowerCase().includes("america"))
+        );
+      } else if (locationFilter === "Europe Only") {
+        filtered = filtered.filter(job => 
+          job.candidate_required_location && 
+          job.candidate_required_location.toLowerCase().includes("europe")
+        );
+      } else if (locationFilter === "India Only") {
+        filtered = filtered.filter(job => 
+          job.candidate_required_location && 
+          job.candidate_required_location.toLowerCase().includes("india")
+        );
+      }
+    }
+
+    // Apply salary filter
+    if (salaryFilter !== "") {
+      filtered = filtered.filter(job => {
+        if (salaryFilter === "Not Specified") {
+          return !job.salary || job.salary === "";
+        } 
+        
+        const salary = job.salary?.toLowerCase() || "";
+        
+        if (salaryFilter === "Hourly Jobs") {
+          return salary.includes("/hour") || salary.includes("hour");
+        } else if (salaryFilter === "Under $50k Annual") {
+          // Check if it's annual (no /hour) and under 50k
+          if (salary.includes("/hour") || salary.includes("hour")) return false;
+          const match = salary.match(/\$(\d+)k/);
+          return match && parseInt(match[1]) < 50;
+        } else if (salaryFilter === "$50k-$100k Annual") {
+          if (salary.includes("/hour") || salary.includes("hour")) return false;
+          const match = salary.match(/\$(\d+)k/);
+          return match && parseInt(match[1]) >= 50 && parseInt(match[1]) <= 100;
+        } else if (salaryFilter === "Above $100k Annual") {
+          if (salary.includes("/hour") || salary.includes("hour")) return false;
+          const match = salary.match(/\$(\d+)k/);
+          return match && parseInt(match[1]) > 100;
+        }
+        return true;
+      });
+    }
+
+    setFilteredJobs(filtered);
+  }, [searchQuery, jobs, categoryFilter, locationFilter, salaryFilter]);
 
   const clearSearch = () => {
     setSearchQuery("");
+  };
+
+  const clearAllFilters = () => {
+    setCategoryFilter("");
+    setLocationFilter("");
+    setSalaryFilter("");
+    setSearchQuery("");
+  };
+
+  // Get unique categories from jobs
+  const getUniqueCategories = () => {
+    const categories = jobs.map(job => job.category).filter(Boolean);
+    return [...new Set(categories)].sort();
   };
 
   if (loading) return <BarLoader width="100%" color="#36d7b7" className="mt-10" />;
@@ -131,33 +219,96 @@ const [jobsPerPage] = useState(9);
       <h2 className="gradient-title text-4xl font-extrabold   sm:text-5xl lg:text-7xl">
         Remote Jobs 
       </h2>
-      <h3 className="text-gray-300 text-xl flex flex-col sm:flex-row items-center justify-center m-0">
-        Find the latest remote jobs sourced from
-        <Link to="https://remotive.com" target="_blank" className="text-blue-500 bg-blue-500/10 px-2 py-1 rounded-md ml-2 hover:bg-blue-500/50"> Remotive.com</Link>
-      </h3>
+      <div className="text-gray-300 text-sm sm:text-lg lg:text-xl text-center px-4 max-w-4xl">
+        <span>Find the latest remote jobs sourced from</span>
+        <Link 
+          to="https://remotive.com" 
+          target="_blank" 
+          className="text-blue-500 bg-blue-500/10 px-2 py-1 rounded-md mx-1 hover:bg-blue-500/50 inline-block whitespace-nowrap"
+        >
+          Remotive.com
+        </Link>
+      </div>
+      
+      {/* Filters Section */}
+      <div className="flex flex-col gap-3 w-full max-w-6xl px-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* Category Filter */}
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-full h-9 text-sm">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              {getUniqueCategories().map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Location Filter */}
+          <Select value={locationFilter} onValueChange={setLocationFilter}>
+            <SelectTrigger className="w-full h-9 text-sm">
+              <SelectValue placeholder="Location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Worldwide">Worldwide</SelectItem>
+              <SelectItem value="US Only">US Only</SelectItem>
+              <SelectItem value="Europe Only">Europe Only</SelectItem>
+              <SelectItem value="India Only">India Only</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Salary Filter */}
+          <Select value={salaryFilter} onValueChange={setSalaryFilter}>
+            <SelectTrigger className="w-full h-9 text-sm">
+              <SelectValue placeholder="Salary Range" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Not Specified">Not Specified</SelectItem>
+              <SelectItem value="Hourly Jobs">Hourly Jobs</SelectItem>
+              <SelectItem value="Under $50k Annual">Under $50k Annual</SelectItem>
+              <SelectItem value="$50k-$100k Annual">$50k - $100k Annual</SelectItem>
+              <SelectItem value="Above $100k Annual">Above $100k Annual</SelectItem>
+            </SelectContent>
+          </Select>
+
+          {/* Clear All Filters Button - Always visible */}
+          <Button 
+            variant="outline" 
+            onClick={clearAllFilters} 
+            className="h-9 text-sm"
+          >
+            Clear Filters
+          </Button>
+        </div>
+      </div>
     
       {/* Search Filter */}
-      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-2xl px-4 justify-center ">
+      <div className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl px-4 justify-center">
         <Input
           type="text"
           placeholder="Search by job title..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="flex-1"
+          className="flex-1 h-9 text-sm"
         />
         <Button
           variant="outline"
           onClick={clearSearch}
-          className="sm:w-auto sm:h-10"
+          className="sm:w-auto h-9 text-sm"
         >
-          Clear
+          Clear Search
         </Button>
       </div>
 
       {/* Results count */}
-      {searchQuery && (
-        <div className="text-gray-400 text-sm">
-          Found {filteredJobs.length} job{filteredJobs.length !== 1 ? 's' : ''} matching "{searchQuery}"
+      {(searchQuery || categoryFilter || locationFilter || salaryFilter) && (
+        <div className="text-gray-400 text-sm text-center">
+          Found {filteredJobs.length} job{filteredJobs.length !== 1 ? 's' : ''} 
+          {searchQuery && ` matching "${searchQuery}"`}
+          {(categoryFilter || locationFilter || salaryFilter) && " with applied filters"}
         </div>
       )}
     

@@ -116,12 +116,11 @@ const Header = () => {
       <nav className="mt-5 ml-1 sm:ml-3 sm:p-4  sm:m-5 flex justify-between items-center">
         <Link
           to="/"
-          className="bg-slate-300 hover:bg-slate-700 rounded-lg p-2 gap-x-2 px-5 flex items-center justify-center sm:gap-5"
+          className="bg-slate-300 hover:bg-slate-700 rounded-lg p-2 gap-x-2 px-4 flex items-center justify-center sm:gap-5"
         >
-          <img src="/logo.png" className="h-7 sm:h-10 lg:h-20" alt="Logo" />
+          <img src="/logo.png" className="h-7 sm:h-10 lg:h-12" alt="Logo" />
           <span className="text-[15px] sm:text-[20px] md:text-[20px] lg:text-2xl font-bold text-slate-900 flex flex-row justify-center items-center">
-            <HouseIcon size={20} className="mr-2" />
-            Home
+            <HouseIcon size={20}  />
           </span>
         </Link>
 

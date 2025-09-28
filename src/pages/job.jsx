@@ -61,49 +61,45 @@ const handleHiringStatusChange = (value) => {
   return (
     <div className="flex flex-col gap-7 mt-8 mx-7 lg:mr-12 lg:mt-2 ">
       <div className="flex flex-col-reverse gap-6 sm:flex-row justify-between items-center">
-        <h1 className="gradient-title text-3xl font-extrabold  pb-3 sm:text-6xl">
-          {job?.title}
+        <h1 className="gradient-title text-lg font-extrabold pb-3 sm:text-3xl lg:text-4xl">
+          {job?.title} at {job?.company?.name}
         </h1>
         <img
           src={job?.company?.logo_url}
           alt={job?.company?.name}
-          
-          className="h-12 lg:h-16]"
+          loading="lazy"
+          className="w-16 h-16 lg:w-20 lg:h-20 object-contain"
         />
-         {/* rendering details  for applying to a job first clreate policy in applications*/}
-      {/* now create api application .js related to applications logic */}
-      {/* so we create random filename assigning and upload   it on supabase in resumes bucket 
-      buy usingg jobdata.resume which get by user in frontend */}
-      {/* using that stoage bucket file we can resume apth which will be inserted into 
-      supabase table applications with all jobdata of users  */}
-      {job?.recruiter_id !== user?.id && (
-        <ApplyJobDrawer job={job} user={user} fetchJob={fnjob} 
-        applied={job?.applications?.find((app) => app.candidate_id === user.id)} />
-      )}
-      {/* //fetchjob due to after we submit application we have to update applicants number the page by fnjob */}
-      {/* find calls predicate once for each element of the array, in ascending order, until it finds one where predicate returns true. If such an element is found, find immediately returns that element value. Otherwise, find returns undefined. */}
-   
+        {job?.recruiter_id !== user?.id && (
+          <ApplyJobDrawer job={job} user={user} fetchJob={fnjob} 
+          applied={job?.applications?.find((app) => app.candidate_id === user.id)} />
+        )}
       </div>
-      <div className="flex  gap-x-1 justify-evenly">
-        <div className="flex  gap-1">
-          <MapPin />
-          {job?.location}
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm md:text-base">
+        <div className="flex items-center gap-2">
+          <MapPin size={16} className="flex-shrink-0" />
+          <span className="truncate">{job?.location}</span>
         </div>
-        <div className="flex gap-1">
-          <Briefcase /> {job?.applications?.length} Applicants
+        <div className="flex items-center gap-2">
+          <Briefcase size={16} className="flex-shrink-0" /> 
+          <span>{job?.applications?.length} Applicants</span>
         </div>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-2">
           {job?.isopen === true ? (
             <>
-              <DoorOpenIcon />
-              Open
+              <DoorOpenIcon size={16} className="flex-shrink-0" />
+              <span>Open</span>
             </>
           ) : (
             <>
-              <DoorClosedLockedIcon />
-              Closed
+              <DoorClosedLockedIcon size={16} className="flex-shrink-0" />
+              <span>Closed</span>
             </>
           )}
+        </div>
+        <div className="flex items-center gap-2">
+          <span>Posted: {new Date(job?.created_at).toLocaleDateString()}</span>
         </div>
       </div>
 
@@ -123,21 +119,22 @@ const handleHiringStatusChange = (value) => {
         </Select>
       )}
 
-      <div className="flex flex-col    gap-y-5   ">
-        <div className="flex flex-col w-full gap-5 ">
-          <h2 className="text-2xl font-bold sm:text-3xl ">About The Job</h2>
-          <p className="sm:text-lg lg:w-full">{job?.description}</p>
+      <div className="flex flex-col gap-y-6">
+        <div className="w-full border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+          <h2 className="text-xl font-semibold sm:text-2xl mb-3">About the job</h2>
+          <p className="text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300 whitespace-pre-wrap lg:w-full m-0 p-0">
+            {job?.description}
+          </p>
         </div>
 
-        <div className="flex flex-col w-full gap-5">
-          <h2 className="text-2xl font-bold sm:text-3xl ">
-            What We're Looking For
-          </h2>
-
-          <MDEditor.Markdown
-            source={job?.requirements}
-            className=" bg-transparent sm:text-lg lg:w-full "
-          />
+        <div className="w-full border border-slate-200 dark:border-slate-700 rounded-lg p-6">
+          <h2 className="text-xl font-semibold sm:text-2xl mb-3">What we're looking for</h2>
+          <div className="text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300 lg:w-full m-0 p-0">
+            <MDEditor.Markdown
+              source={job?.requirements}
+              className={"bg-transparent m-0 p-0 [&_ul]:pl-4 [&_ul]:ml-0 [&_ul]:list-inside [&_ul]:bg-transparent [&_ul]:m-0 [&_li]:mb-2 [&_li]:ml-0"}
+            />
+          </div>
         </div>
       </div>
 

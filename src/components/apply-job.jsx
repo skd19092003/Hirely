@@ -27,6 +27,7 @@ import { BarLoader } from "react-spinners";
 
 //now lets create the schema for zod react validation library it chdecks whether vslue is correct or not
 const schema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
   experience: z
     .number()
     .min(0, { message: "Experience must be atleast 0" })
@@ -109,6 +110,15 @@ export const ApplyJobDrawer = ({ user, job, applied = false, fetchJob }) => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 p-4 pb-0"
         >
+          <Input
+            type="email"
+            placeholder="Email Address"
+            className="flex-1 lg:text-[18px]"
+            {...register("email")}
+          />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}
           <Input
             type="number"
             placeholder="Years of Experience"

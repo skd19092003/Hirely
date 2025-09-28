@@ -22,6 +22,9 @@ export async function getJobs(token, { location, company_id, searchQuery }) {
     query = query.ilike("title", `%${searchQuery}%`);
   }
 
+  // Order by created_at in descending order (newest first)
+  query = query.order("created_at", { ascending: false });
+
   const { data, error } = await query;
 
   if (error) {
@@ -95,7 +98,7 @@ export async function updateHiringStatus(token,{job_id}, isopen) {
     console.error("Error fetching jobs:", error);
     return null;
   }
-
+ 
   return data;
 } 
 //this __ means options={} ,not providing anything from the custom hook

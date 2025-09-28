@@ -3,6 +3,7 @@ import {
   BriefcaseBusiness,
   Download,
   Eye,
+  Mail,
   School2Icon,
 } from "lucide-react";
 import {
@@ -52,23 +53,33 @@ const ApplicationCard = ({ application, isCandidate = false }) => {
       </CardHeader>
       {/* flex-1 ensures each block takes equal width. */}
       <CardContent className="flex flex-col gap-4 flex-1">
-        <div className="flex flex-col md:flex-row justify-between">
+        {/* Email section - only show for recruiters */}
+        {!isCandidate && application?.email && (
+          <div className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <Mail size={16} className="text-blue-500" />
+            <span className="text-sm font-medium truncate">{application.email}</span>
+          </div>
+        )}
+        
+        <div className="flex flex-col lg:flex-row justify-between gap-4">
           <div className="flex items-center gap-2 flex-1">
             <BriefcaseBusiness size={15} />
-            {application?.experience} years of experience
+            <span className="text-sm">{application?.experience} years of experience</span>
           </div>
           <div className="flex items-center gap-2 flex-1">
             <School2Icon size={15} />
-            {application?.education}
-          </div>
-          <div className="flex sm:items-center  gap-x-2 flex-1 flex-col sm:flex-row ">
-            <div className="flex items-center gap-2 flex-1">
-              <Boxes size={15} />
-              Skills:
-            </div>
-            <div >{application?.skills}</div>
+            <span className="text-sm">{application?.education}</span>
           </div>
         </div>
+        
+        <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Boxes size={15} />
+            <span className="text-sm font-medium">Skills:</span>
+          </div>
+          <div className="text-sm break-words">{application?.skills}</div>
+        </div>
+        
         <hr />
       </CardContent>
       <CardFooter className="flex flex-col sm:flex-row  gap-y-2 justify-between">

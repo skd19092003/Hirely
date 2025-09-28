@@ -1,6 +1,6 @@
 import useFetch from "@/hooks/usefetch";
 import { useUser } from "@clerk/clerk-react";
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getSingleJob, updateHiringStatus } from "@/api/apiJobs";
 import { BarLoader } from "react-spinners";
@@ -10,7 +10,7 @@ import {
   DoorOpenIcon,
   MapPin,
 } from "lucide-react";
-const MDEditor = React.lazy(() => import("@uiw/react-md-editor"));
+import MDEditor from "@uiw/react-md-editor";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {ApplyJobDrawer} from "@/components/apply-job";
 import ApplicationCard from "@/components/ApplicationCard";
@@ -130,12 +130,10 @@ const handleHiringStatusChange = (value) => {
         <div className="w-full border border-slate-200 dark:border-slate-700 rounded-lg p-6">
           <h2 className="text-xl font-semibold sm:text-2xl mb-3">What we're looking for</h2>
           <div className="text-sm sm:text-base leading-relaxed text-slate-700 dark:text-slate-300 lg:w-full m-0 p-0">
-            <Suspense fallback={<div className="text-sm text-slate-500">Loading content...</div>}>
-              <MDEditor.Markdown
-                source={job?.requirements}
-                className={"bg-transparent m-0 p-0 [&_ul]:pl-4 [&_ul]:ml-0 [&_ul]:list-inside [&_ul]:bg-transparent [&_ul]:m-0 [&_li]:mb-2 [&_li]:ml-0"}
-              />
-            </Suspense>
+            <MDEditor.Markdown
+              source={job?.requirements}
+              className={"bg-transparent m-0 p-0 [&_ul]:pl-4 [&_ul]:ml-0 [&_ul]:list-inside [&_ul]:bg-transparent [&_ul]:m-0 [&_li]:mb-2 [&_li]:ml-0"}
+            />
           </div>
         </div>
       </div>

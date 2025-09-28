@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "./ui/button";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignIn,
-  UserButton,
-  SignUp,
-} from "@clerk/clerk-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+const SignIn = React.lazy(() => import('@clerk/clerk-react').then(m => ({ default: m.SignIn })));
+const SignUp = React.lazy(() => import('@clerk/clerk-react').then(m => ({ default: m.SignUp })));
 import { BriefcaseBusiness, Heart, PenBox, HouseIcon, Joystick, House } from "lucide-react";
 import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
@@ -219,48 +214,44 @@ z-50: Sets a high z-index (50), so the element appears above most other conten *
       {/* //login button modal */}
       {showsignin && (
         <div
-        //ok so this is the outside area of modal which we can click and disappear the modal
           className="fixed top-0 right-0 bottom-0 left-0 bg-black/50 z-50 flex items-center justify-center"
           onClick={handleoverlayclick}
         >
-          {/* simple onlcick div par lagNE SE due to inset pure screen se kahi bhii click krne par band hoga will not be able to use handle signin email google github button so use a function handleoverlay*/}
-          <SignIn
-            //signin ke baad force krega to onboarding page pe
-            signUpForceRedirectUrl="/onboarding"
-            fallbackRedirectUrl="/onboarding"
-          />
+          <Suspense fallback={<div className="p-4 rounded bg-white">Loading...</div>}>
+            <SignIn
+              signUpForceRedirectUrl="/onboarding"
+              fallbackRedirectUrl="/onboarding"
+            />
+          </Suspense>
         </div>
       )}
       {/* //signup button modal */}
       {showsignup3 && (
         <div
-        //ok so this is the outside area of modal which we can click and disappear the modal
           className="fixed top-0  right-0 bottom-0 left-0 bg-black/50 z-50 flex items-center justify-center "
           onClick={handleoverlayclick}
         >
-         
-          {/* simple onlcick div par lagNE SE due to inset pure screen se kahi bhii click krne par band hoga will not be able to use handle signin email google github button so use a function handleoverlay*/}
-          <SignUp
-            appearance={{
-              elements: {
-                card: "p-1 pt-6", // tightest padding for modal
-                formField: "mb-1", // reduce space between fields
-                formFieldLabel: "text-[8px] mb-0 pb-0", // smallest label, no margin/padding
-                formFieldInput: "text-[8px] py-1 px-2", // smallest input
-                formButtonPrimary: "text-[8px] py-1 px-2 mt-1", // smallest button, tight top margin
-                headerTitle: "text-xs mb-1", // smallest title, tight bottom margin
-                headerSubtitle: "text-[8px] mb-1", // smallest subtitle, tight bottom margin
-                footerAction: "text-[8px] mt-1", // smallest footer, tight top margin
-                socialButtonsBlockButton: "text-[8px] py-1 px-2 mb-1", // smallest social button, tight bottom margin
-                dividerText: "text-[8px] my-1", // smallest divider, tight vertical margin
-              },
-            }}
-            //signin ke baad force krega to onboarding page pe
-            signUpForceRedirectUrl="/onboarding"
-            fallbackRedirectUrl="/onboarding"
-          />
-          </div>
-        
+          <Suspense fallback={<div className="p-4 rounded bg-white">Loading...</div>}>
+            <SignUp
+              appearance={{
+                elements: {
+                  card: "p-1 pt-6", // tightest padding for modal
+                  formField: "mb-1", // reduce space between fields
+                  formFieldLabel: "text-[8px] mb-0 pb-0", // smallest label, no margin/padding
+                  formFieldInput: "text-[8px] py-1 px-2", // smallest input
+                  formButtonPrimary: "text-[8px] py-1 px-2 mt-1", // smallest button, tight top margin
+                  headerTitle: "text-xs mb-1", // smallest title, tight bottom margin
+                  headerSubtitle: "text-[8px] mb-1", // smallest subtitle, tight bottom margin
+                  footerAction: "text-[8px] mt-1", // smallest footer, tight top margin
+                  socialButtonsBlockButton: "text-[8px] py-1 px-2 mb-1", // smallest social button, tight bottom margin
+                  dividerText: "text-[8px] my-1", // smallest divider, tight vertical margin
+                },
+              }}
+              signUpForceRedirectUrl="/onboarding"
+              fallbackRedirectUrl="/onboarding"
+            />
+          </Suspense>
+        </div>
       )}
 {/* //guest access modal */}
       {showsignin2 && (

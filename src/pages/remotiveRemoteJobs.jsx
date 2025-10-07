@@ -47,8 +47,8 @@ const [jobsPerPage] = useState(9);
     const cacheTime = localStorage.getItem('remotiveJobsTime');
     const now = Date.now();
 
-    // 7 hours in milliseconds
-    const maxAge = 7 * 60 * 60 * 1000;
+    // 6 hours in milliseconds
+    const maxAge = 6 * 60 * 60 * 1000;
 
     if (cache && cacheTime && now - cacheTime < maxAge) {
       const cachedJobs = JSON.parse(cache);

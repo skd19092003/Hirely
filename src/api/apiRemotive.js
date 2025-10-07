@@ -3,4 +3,4 @@ export async function getRemotiveJobs({ page = 1, limit = 10 } = {}) {
   const data = await response.json();
   return data.jobs; // array of jobs
 }
- 
+  

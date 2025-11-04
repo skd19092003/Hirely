@@ -44,7 +44,7 @@ const Landingpage = () => {
             Find Jobs</Button>
         </Link>
         <Link to="/remotiveRemoteJobs" className="flex-1 sm:flex-none">
-          <Button variant="outline" size="sm" className="w-full sm:w-auto px-2 sm:px-8 lg:px-12 xl:px-16 py-2 sm:py-4 lg:py-6 xl:py-7 text-xs sm:text-base lg:text-xl xl:text-2xl font-semibold border-gray-400 text-gray-300 hover:bg-gray-700">
+          <Button variant="outline" size="sm" className="w-full sm:w-auto px-2 sm:px-8 lg:px-12 xl:px-16 py-2 sm:py-4 lg:py-6 xl:py-7 text-xs sm:text-base lg:text-xl xl:text-2xl font-semibold border-gray-400 text-gray-300 hover:bg-gray-700" onClick={e => {if (isRecruiter) {e.preventDefault();window.openGuestAccessModal();}}}>
             Remote Jobs</Button>
         </Link>
         <Link to="/post-job" className="flex-1 sm:flex-none">

@@ -24,7 +24,7 @@ const Landingpage = () => {
 
   return (
      
-    <main className='flex flex-col gap-10 py-10 px-5 sm:gap-20  sm:py-15 '>
+    <main className='flex flex-col gap-12 py-10 px-5 sm:gap-20  sm:py-15 '>
       <section className='text-center'>
         <h1 className='flex flex-col items-center justify-center gradient-title text-2xl font-extrabold sm:text-5xl lg:text-7xl tracking-tighter py-2'>
           Get Hired. Get Ahead. Get Hirely.

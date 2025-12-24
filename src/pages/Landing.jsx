@@ -84,7 +84,7 @@ const Landingpage = () => {
         {/* //cards */}
         <section className="grid sm:grid-cols-2 gap-4 justify-items-center">
 
-          <Card className="w-full max-w-[18rem]  sm:max-w-md  sm:border-4 sm:border-emerald-200">
+          <Card className="w-full max-w-[18rem]  sm:max-w-md  sm:border-4 sm:border-emerald-200 rounded-full">
             <CardHeader className="bg-green-600 p-1 text-white flex items-center justify-center  sm:p-6">
               <CardTitle className="font-bold text-sm sm:text-2xl">For Job Seekers</CardTitle>
             </CardHeader>

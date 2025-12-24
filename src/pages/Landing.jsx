@@ -84,7 +84,6 @@ const Landingpage = () => {
         {/* //cards */}
         <section className="grid sm:grid-cols-2 gap-4 justify-items-center">
 
-<div className= "rounded-xl">
           <Card className="w-full max-w-[18rem]  sm:max-w-md  sm:border-4 sm:border-emerald-200">
             <CardHeader className="bg-green-600 p-1 text-white flex items-center justify-center sm:p-6">
               <CardTitle className="font-bold text-sm sm:text-2xl">For Job Seekers</CardTitle>
@@ -93,9 +92,7 @@ const Landingpage = () => {
               Search and apply for jobs, track applications, and more.
             </CardContent>
           </Card>
-</div>
 
-<div className= "rounded-xl" >
           <Card className="w-full max-w-[18rem] sm:max-w-md sm:border-4 sm:border-emerald-200">
             <CardHeader className="bg-gray-600 text-white flex items-center justify-center p-1 sm:p-6">
               <CardTitle className="font-bold text-sm sm:text-2xl">For Recruiters</CardTitle>
@@ -104,7 +101,6 @@ const Landingpage = () => {
               Post jobs, manage applications, and find the best candidates.
             </CardContent>
           </Card>
-</div>
         </section>
       
 

@@ -84,8 +84,8 @@ const Landingpage = () => {
         {/* //cards */}
         <section className="grid sm:grid-cols-2 gap-4 justify-items-center">
 
-          <Card className="w-full max-w-[18rem]  sm:max-w-md  sm:border-4 sm:border-emerald-200">
-            <CardHeader className="bg-green-600 p-1 text-white flex items-center justify-center sm:p-6">
+          <Card className="w-full max-w-[18rem] sm:max-w-md border-2 border-gray-400 rounded-2xl force-rounded-card">
+            <CardHeader className="bg-green-600 p-1 text-white flex items-center justify-center  sm:p-6">
               <CardTitle className="font-bold text-sm sm:text-2xl">For Job Seekers</CardTitle>
             </CardHeader>
             <CardContent className="bg-slate-200 text-black font-semibold flex justify-center items-center p-2 sm:p-6 pt-1 sm:pt-4 text-xs sm:text-base">
@@ -93,7 +93,7 @@ const Landingpage = () => {
             </CardContent>
           </Card>
 
-          <Card className="w-full max-w-[18rem] sm:max-w-md sm:border-4 sm:border-emerald-200">
+          <Card className="w-full max-w-[18rem] sm:max-w-md border-2 border-gray-400 rounded-2xl force-rounded-card">
             <CardHeader className="bg-gray-600 text-white flex items-center justify-center p-1 sm:p-6">
               <CardTitle className="font-bold text-sm sm:text-2xl">For Recruiters</CardTitle>
             </CardHeader>
